@@ -1,4 +1,4 @@
-FROM 23-slim AS builder
+FROM node:23-slim AS builder
 WORKDIR /app
 COPY . .
 RUN npm install
