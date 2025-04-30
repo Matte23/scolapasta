@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import SQLInjection from './pages/SQLInjection';
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import CommandInjection from './pages/CommandInjection';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/sqli">SQL Injection</Nav.Link>
+              <Nav.Link as={Link} to="/cmdi">Command Injection</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -19,6 +21,7 @@ function App() {
       <div style={{ padding: 20 }}>
         <Routes>
           <Route path="/sqli" element={<SQLInjection />} />
+          <Route path="/cmdi" element={<CommandInjection />} />
         </Routes>
       </div>
     </Router>

@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const { exec } = require('child_process');
 const app = express();
 
 const db = require('./db');
@@ -32,6 +33,25 @@ app.post('/api/login', (req, res) => {
         query: query
       });
     }
+  });
+});
+
+app.post('/api/ping', (req, res) => {
+  const { ip } = req.body;
+
+  // 🚨 INTENTIONALLY VULNERABLE TO COMMAND INJECTION
+  const command = `ping -c 4 ${ip}`;
+  exec(command, (err, stdout, stderr) => {
+    if (err) {
+      return res.status(500).json({
+        output: stderr,
+        command: command
+      });
+    }
+    res.json({
+      output: stdout,
+      command: command
+    });
   });
 });
 
