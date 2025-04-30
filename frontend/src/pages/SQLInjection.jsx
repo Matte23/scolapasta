@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
-import { Card, Container, Form, Button, Alert } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Card, Container, Form, Button, Alert } from "react-bootstrap";
 
 export default function SQLInjection() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [msg, setMsg] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [msg, setMsg] = useState("");
+  const [status, setStatus] = useState(null);
+  const [query, setQuery] = useState("");
+  const [showQuery, setShowQuery] = useState(false);
 
   const handleLogin = async () => {
-    const res = await fetch('http://localhost:5000/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+    const res = await fetch("http://localhost:5000/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
     });
-
-    const text = await res.text();
-    setMsg(text);
+    const data = await res.json();
+    setStatus(res.status);
+    setMsg(data.message);
+    setQuery(data.query);
   };
 
   return (
@@ -30,14 +34,22 @@ export default function SQLInjection() {
               <Form.Control
                 type="text"
                 placeholder="Username"
-                onChange={e => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formPassword">
               <Form.Control
                 type="password"
                 placeholder="Password"
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formShowQuery">
+              <Form.Check
+                type="checkbox"
+                label="Show query"
+                checked={showQuery}
+                onChange={(e) => setShowQuery(e.target.checked)}
               />
             </Form.Group>
             <div className="d-grid">
@@ -47,8 +59,17 @@ export default function SQLInjection() {
             </div>
           </Form>
           {msg && (
-            <Alert className="mt-3" variant="info">
+            <Alert
+              className={`mt-3 ${
+                status === 200 ? "alert-success" : "alert-warning"
+              }`}
+            >
               {msg}
+            </Alert>
+          )}
+          {showQuery && query && (
+            <Alert className="mt-3 info">
+              <strong>Query:</strong> {query}
             </Alert>
           )}
         </Card.Body>

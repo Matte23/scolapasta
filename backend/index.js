@@ -15,11 +15,22 @@ app.post('/api/login', (req, res) => {
   const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
 
   db.query(query, (err, results) => {
-    if (err) return res.status(500).send('Error');
+    if (err) {
+      return res.status(500).json({
+        message: 'Error',
+        query: query
+      });
+    }
     if (results.length > 0) {
-      res.send('Login successful');
+      res.json({
+        message: 'Login successful',
+        query: query
+      });
     } else {
-      res.status(401).send('Invalid credentials');
+      res.status(401).json({
+        message: 'Invalid credentials',
+        query: query
+      });
     }
   });
 });
