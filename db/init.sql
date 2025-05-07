@@ -4,5 +4,10 @@ CREATE TABLE users (
   password VARCHAR(255)
 );
 
+CREATE TABLE posts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  content TEXT NOT NULL
+);
+
 INSERT INTO users (username, password) VALUES ('admin', 'admin123');
 INSERT INTO users (username, password) VALUES ('user', 'password');

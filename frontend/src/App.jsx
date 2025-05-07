@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import SQLInjection from './pages/SQLInjection';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import CommandInjection from './pages/CommandInjection';
+import XSS from './pages/XSS';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/sqli">SQL Injection</Nav.Link>
               <Nav.Link as={Link} to="/cmdi">Command Injection</Nav.Link>
+              <Nav.Link as={Link} to="/xss">XSS</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -22,6 +24,7 @@ function App() {
         <Routes>
           <Route path="/sqli" element={<SQLInjection />} />
           <Route path="/cmdi" element={<CommandInjection />} />
+          <Route path="/xss" element={<XSS />} />
         </Routes>
       </div>
     </Router>

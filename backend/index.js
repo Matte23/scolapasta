@@ -55,4 +55,32 @@ app.post('/api/ping', (req, res) => {
   });
 });
 
+// Endpoint to add a new post
+app.post('/api/posts', (req, res) => {
+  const { post } = req.body;
+
+  if (!post || post.trim() === '') {
+    return res.status(400).json({ message: 'Post content cannot be empty' });
+  }
+
+  const query = 'INSERT INTO posts (content) VALUES (?)';
+  db.query(query, [post], (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error adding post', error: err });
+    }
+    res.json({ message: 'Post added successfully', postId: results.insertId });
+  });
+});
+
+// Endpoint to get all posts
+app.get('/api/posts', (req, res) => {
+  const query = 'SELECT * FROM posts';
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error fetching posts', error: err });
+    }
+    res.json({ posts: results });
+  });
+});
+
 app.listen(5000, () => console.log('Backend running on port 5000'));
