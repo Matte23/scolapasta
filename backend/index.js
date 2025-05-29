@@ -3,11 +3,13 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const { exec } = require('child_process');
 const app = express();
+const path = require('path');
 
 const db = require('./db');
 
 app.use(cors());
 app.use(express.json());
+const serveStatic = express.static(path.join(__dirname, '../frontend/dist'));
 
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
@@ -81,6 +83,13 @@ app.get('/api/posts', (req, res) => {
     }
     res.json({ posts: results });
   });
+});
+
+app.use((req, res, next) => {
+  if (!req.path.startsWith('/api')) {
+    return serveStatic(req, res, next);
+  }
+  next();
 });
 
 app.listen(5000, () => console.log('Backend running on port 5000'));

@@ -15,8 +15,8 @@ services:
       timeout: 10s
       retries: 3
 
-  backend:
-    build: ./backend
+  service:
+    build: ./
     restart: always
     ports:
       - "5000:5000"
@@ -25,11 +25,3 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
-  frontend:
-    build: ./frontend
-    restart: always
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
